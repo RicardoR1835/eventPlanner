@@ -1,0 +1,54 @@
+@using BeltExam.Models;
+@model List<Event>;
+
+
+<h1 class="text-center" style="display: inline-block; width: 90%;">Dojo Activity Center</h1>
+<a style="margin-right: 20px;" href="/home">Home</a>
+<a href="/logout">Logout</a>
+<br>
+<br>
+@foreach(var x in @Model)
+{
+    <h2 style="display: inline-block; width: 90%;">@x.Title</h2>
+    @if(x.Creator == ViewBag.LoggedIn)
+    {
+        <a href="/delete/@x.EventId">Delete</a>;
+    }
+    else
+    {
+        bool y = false;
+        @foreach(var user in x.GuestList)
+        {
+            @if(user.UserId == ViewBag.LoggedIn.UserId)
+            {
+                y = true;
+            }
+        }
+        @if(y == true)
+            {
+                <a class="btn btn-danger" href="/unrsvp/@x.EventId">UnJoin</a>
+            }
+        else
+        {
+            <a class="btn btn-primary" href="/rsvp/@x.EventId">Join</a>
+        }
+    }
+    <div class="container">
+        <p style="display: inline-block; width: 15%; margin-right: 20px;">Event Coordinater:</p>
+        <p style="display: inline-block;">@x.Creator.FName</p>
+        <p>Description</p>
+        <p>@x.Description</p>
+        <br>
+        <br>
+        <h3>Participants:</h3>
+        <ul>
+        @foreach(var guest in x.GuestList)
+        {
+            <li>@guest.Guest.FName</li>
+        }
+        </ul>
+
+    </div>
+}
+
+

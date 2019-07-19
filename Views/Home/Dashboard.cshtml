@@ -1,0 +1,83 @@
+@model BeltExam.Models.Event;
+
+
+<h1 class="text-center" style="display: inline-block; width: 80%;">Dojo Activity Center</h1>
+<p style="display: inline-block; width: 10%;">Welcome @ViewBag.LoggedIn.FName</p>
+<a href="/logout">Logout</a>
+<br>
+<br>
+<span class="text-center" style="color: red;" asp-validation-for="Date"></span>
+<div class="container">
+    
+    <div class="actions">
+        <table class="table">
+    <thead class="thead-light text-center">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Activity</th>
+            <th scope="col">Date & Time</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Event Coordinator</th>
+            <th scope="col"># of Participants</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            DateTime Now = DateTime.Now;
+            int i = 1;
+            @foreach(var x in ViewBag.Activities)
+            {
+                @if(x.Date > Now)
+                {
+                    <tr>
+                    <th scope="row">@i</th>
+                    <td><a href="/activity/@x.EventId">@x.Title</a></td>
+                    <td>@x.Date.ToString("MM/dd") at @x.Time</td>
+                    <td>@x.Duration @x.TimeType</td>
+                    <td>@x.Creator.FName</td>
+                    <td>@x.GuestList.Count</td>
+                    @if(x.Creator == ViewBag.LoggedIn)
+                    {
+                        <td><a href="/delete/@x.EventId">Delete</a></td>;
+                    }
+                    else
+                    {
+                        if(x.GuestList.Count == 0)
+                        {
+                            <td><a href="/rsvp/@x.EventId">Join</a></td>
+                        }
+                        else
+                        {
+                            bool y = false;
+                            @foreach(var user in x.GuestList)
+                            {
+                                @if(user.UserId == ViewBag.LoggedIn.UserId)
+                                {
+                                    y = true;
+                                }
+                            }
+                            @if(y == true)
+                            {
+                                <td><a class="like" href="/unrsvp/@x.EventId">Unjoin</a></td>
+                            }
+                            else
+                            {
+                                <td><a class="unlike" href="/rsvp/@x.EventId">Join</a></td>
+                                
+                            }                   
+                        }
+                            
+                    }
+
+                    </tr>
+                    i++;
+                }
+            }
+        }
+
+    </tbody>
+    </table> 
+    </div>
+    <p class="text-right"><a href="/activity/new" class=" btn btn-primary">Add New Activity</a></p>
+</div>

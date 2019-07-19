@@ -1,0 +1,51 @@
+@model BeltExam.Models.Event;
+
+<h1 class="text-center" style="display: inline-block; width: 90%;">Dojo Activity Center</h1>
+<a style="margin-right: 20px;" href="/home">Home</a>
+<a href="/logout">Logout</a>
+<br>
+<br>
+<div class="container-fluid">
+<div class="newactivity">
+    <form action="/add/activity" method="post">
+        <div class="form-row">
+            <div class="form-group col-sm">
+                <label for="inputEmail4">Title:</label>
+                <span style="color: red;" asp-validation-for="Title"></span>
+                <input style="color: black;" asp-for="Title" placeholder="Title">
+            </div>
+            <div class="form-group col-sm">
+                <label for="inputPassword4">Time:</label>
+                <span style="color: red;" asp-validation-for="Time"></span>
+                <input style="color: black;" asp-for="Time" placeholder="ex: 3:00pm">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                <label for="inputEmail4">Date:</label>
+                <span style="color: red;" asp-validation-for="Date"></span>
+                <input style="color: black;" asp-for="Date" type="date">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputPassword4">Duration:</label>
+                <span style="color: red;" asp-validation-for="Duration"></span>
+                <input style="color: black;" asp-for="Duration" placeholder="ex: 5 hours" min="1">
+            </div>
+            <div class="form-group col-sm">
+                <span style="color: red;" asp-validation-for="TimeType"></span>
+                <select style="color: black;" asp-for="TimeType">
+                    <option selected value="Hours">Hours</option>
+                    <option value="Minutes">Minutes</option>
+                    <option value="Days">Days</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <span style="color: red;" asp-validation-for="Description"></span>
+            <label for="exampleFormControlTextarea1">Description</label>
+            <textarea class="form-control" asp-for="Description" rows="3"></textarea>
+        </div>
+    <button type="submit" class="btn btn-primary">Create Activity</button>
+    </form>
+</div>
+</div>
